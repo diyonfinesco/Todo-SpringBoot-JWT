@@ -16,4 +16,8 @@ public class CreateTodoDTO {
     @NotBlank(message = "Title is required")
     @Size(min = 2, max = 10, message = "The length of the title must be between 2 and 10 characters.")
     private String title;
+
+    public void setTitle(String title) {
+        this.title = title.trim();
+    }
 }

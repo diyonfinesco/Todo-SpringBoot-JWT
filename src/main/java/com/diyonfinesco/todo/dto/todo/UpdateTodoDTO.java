@@ -26,4 +26,16 @@ public class UpdateTodoDTO {
     @NotNull(message = "Completed is required!")
     @Pattern(regexp = "^true$|^false$", message = "allowed input: true or false")
     private String completed;
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title.trim();
+    }
+
+    public void setCompleted(String completed) {
+        this.completed = completed.trim();
+    }
 }

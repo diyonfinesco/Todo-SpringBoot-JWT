@@ -21,4 +21,12 @@ public class RegisterUserDTO {
     @NotBlank(message = "Password is required!")
     @Size(min = 8, message = "Password should contain at least 8 characters!")
     private String password;
+
+    public void setEmail(String email) {
+        this.email = email.trim();
+    }
+
+    public void setPassword(String password) {
+        this.password = password.trim();
+    }
 }
