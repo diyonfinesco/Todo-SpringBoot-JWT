@@ -1,10 +1,18 @@
 package com.diyonfinesco.todo.repository;
 
 import com.diyonfinesco.todo.model.entity.TodoEntity;
+import com.diyonfinesco.todo.model.entity.UserEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface TodoRepository extends MongoRepository<TodoEntity, String> {
-    TodoEntity findByTitle(String title);
+import java.util.List;
+import java.util.Optional;
 
-    TodoEntity findByTitleAndIdNot(String title, String id);
+public interface TodoRepository extends MongoRepository<TodoEntity, String> {
+    TodoEntity findByTitleIgnoreCase(String title);
+
+    TodoEntity findByTitleIgnoreCaseAndIdNot(String title, String id);
+
+    List<TodoEntity> findAllByUser(UserEntity user);
+
+    Optional<TodoEntity> findByIdAndUser(String id, UserEntity user);
 }

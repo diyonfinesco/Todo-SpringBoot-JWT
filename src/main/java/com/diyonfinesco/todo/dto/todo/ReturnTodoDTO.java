@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class DefaultTodoDTO {
+public class ReturnTodoDTO {
     private String id;
 
     private String title;

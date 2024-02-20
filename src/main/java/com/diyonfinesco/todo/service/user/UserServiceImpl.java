@@ -1,7 +1,7 @@
 package com.diyonfinesco.todo.service.user;
 
 import com.diyonfinesco.todo.dto.user.RegisterUserDTO;
-import com.diyonfinesco.todo.mapper.user.DefaultUserMapper;
+import com.diyonfinesco.todo.mapper.user.ReturnUserMapper;
 import com.diyonfinesco.todo.mapper.user.RegisterUserMapper;
 import com.diyonfinesco.todo.model.entity.UserEntity;
 import com.diyonfinesco.todo.model.enums.Role;
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     RegisterUserMapper registerUserMapper;
 
     @Autowired
-    DefaultUserMapper defaultUserMapper;
+    ReturnUserMapper returnUserMapper;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -39,18 +39,18 @@ public class UserServiceImpl implements UserService {
         }
 
         UserEntity newUser = registerUserMapper.toEntity(registerUserDTO);
-        newUser.setRole(Role.USER);
+        newUser.setRole(Role.ROLE_USER);
         newUser.setPassword(passwordEncoder.encode(registerUserDTO.getPassword()));
 
         userRepository.save(newUser);
-        return new CustomResponseEntity(HttpStatus.CREATED.value(), true, defaultUserMapper.toDTO(newUser));
+        return new CustomResponseEntity(HttpStatus.CREATED.value(), true, returnUserMapper.toDTO(newUser));
     }
 
     @Override
     public CustomResponseEntity findAll() {
         List<UserEntity> users = userRepository.findAll();
 
-        return new CustomResponseEntity(HttpStatus.OK.value(), true, defaultUserMapper.toDTOList(users));
+        return new CustomResponseEntity(HttpStatus.OK.value(), true, returnUserMapper.toDTOList(users));
     }
 
     @Override
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
             return new CustomResponseEntity(HttpStatus.NOT_FOUND.value(), false, "User not found!");
         }
 
-        return new CustomResponseEntity(HttpStatus.OK.value(), true, defaultUserMapper.toDTO(user));
+        return new CustomResponseEntity(HttpStatus.OK.value(), true, returnUserMapper.toDTO(user));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
             return new CustomResponseEntity(HttpStatus.NOT_FOUND.value(), false, "User not found!");
         }
 
-        return new CustomResponseEntity(HttpStatus.OK.value(), true, defaultUserMapper.toDTO(user));
+        return new CustomResponseEntity(HttpStatus.OK.value(), true, returnUserMapper.toDTO(user));
     }
 
     @Override

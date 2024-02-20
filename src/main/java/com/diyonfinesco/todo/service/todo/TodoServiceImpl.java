@@ -3,17 +3,14 @@ package com.diyonfinesco.todo.service.todo;
 import com.diyonfinesco.todo.dto.todo.CreateTodoDTO;
 import com.diyonfinesco.todo.dto.todo.UpdateTodoDTO;
 import com.diyonfinesco.todo.mapper.todo.CreateTodoMapper;
-import com.diyonfinesco.todo.mapper.todo.DefaultTodoMapper;
+import com.diyonfinesco.todo.mapper.todo.ReturnTodoMapper;
 import com.diyonfinesco.todo.mapper.todo.UpdateTodoMapper;
 import com.diyonfinesco.todo.model.entity.TodoEntity;
-import com.diyonfinesco.todo.model.entity.UserEntity;
 import com.diyonfinesco.todo.repository.TodoRepository;
-import com.diyonfinesco.todo.repository.UserRepository;
 import com.diyonfinesco.todo.service.user.UserService;
 import com.diyonfinesco.todo.util.CustomResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,14 +27,14 @@ public class TodoServiceImpl implements TodoService {
     private UpdateTodoMapper updateTodoMapper;
 
     @Autowired
-    private DefaultTodoMapper defaultTodoMapper;
+    private ReturnTodoMapper returnTodoMapper;
 
     @Autowired
     private UserService userService;
 
     @Override
     public CustomResponseEntity create(CreateTodoDTO todoDTO) {
-        TodoEntity isExist = todoRepository.findByTitle(todoDTO.getTitle());
+        TodoEntity isExist = todoRepository.findByTitleIgnoreCase(todoDTO.getTitle());
 
         if (isExist != null) {
             return new CustomResponseEntity(HttpStatus.BAD_REQUEST.value(), false, "Todo title already exist!");
@@ -45,48 +42,52 @@ public class TodoServiceImpl implements TodoService {
 
         TodoEntity todoEntity = createTodoMapper.toEntity(todoDTO);
 
-        return new CustomResponseEntity(HttpStatus.CREATED.value(), true, defaultTodoMapper.toDTO(todoRepository.save(todoEntity)));
+        todoEntity.setUser(userService.getLoggedInUser());
+        todoEntity.setCompleted(false);
+
+        return new CustomResponseEntity(HttpStatus.CREATED.value(), true, returnTodoMapper.toDTO(todoRepository.save(todoEntity)));
     }
 
     @Override
     public CustomResponseEntity findAll() {
-        List<TodoEntity> entities = todoRepository.findAll();
+        List<TodoEntity> entities = todoRepository.findAllByUser(userService.getLoggedInUser());
 
-        UserEntity currentUser = userService.getLoggedInUser();
-
-        return new CustomResponseEntity(HttpStatus.OK.value(), true, defaultTodoMapper.toDTOList(entities));
+        return new CustomResponseEntity(HttpStatus.OK.value(), true, returnTodoMapper.toDTOList(entities));
     }
 
     @Override
     public CustomResponseEntity findById(String id) {
-        TodoEntity todoEntity = todoRepository.findById(id).orElse(null);
+        TodoEntity todoEntity = todoRepository.findByIdAndUser(id, userService.getLoggedInUser()).orElse(null);
 
         if (todoEntity == null) {
             return new CustomResponseEntity(HttpStatus.NOT_FOUND.value(), false, "Todo not found!");
         }
 
-        return new CustomResponseEntity(HttpStatus.OK.value(), true, defaultTodoMapper.toDTO(todoEntity));
+        return new CustomResponseEntity(HttpStatus.OK.value(), true, returnTodoMapper.toDTO(todoEntity));
     }
 
     @Override
     public CustomResponseEntity update(String id, UpdateTodoDTO updateTodoDTO) {
-        TodoEntity isExist = todoRepository.findById(id).orElse(null);
+        TodoEntity todo = todoRepository.findById(id).orElse(null);
 
-        if (isExist == null) {
+        if (todo == null) {
             return new CustomResponseEntity(HttpStatus.NOT_FOUND.value(), false, "Todo not found!");
         }
 
-        TodoEntity isExistBySameTitle = todoRepository.findByTitleAndIdNot(updateTodoDTO.getTitle(), updateTodoDTO.getId());
+        TodoEntity isExistBySameTitle = todoRepository.findByTitleIgnoreCaseAndIdNot(updateTodoDTO.getTitle(), id);
 
         if (isExistBySameTitle != null) {
             return new CustomResponseEntity(HttpStatus.NOT_FOUND.value(), false, "Todo title already exist!");
         }
 
-        TodoEntity todoEntity = updateTodoMapper.toEntity(updateTodoDTO);
+        TodoEntity updateTodo = updateTodoMapper.toEntity(updateTodoDTO);
 
-        todoRepository.save(todoEntity);
+        todo.setTitle(updateTodo.getTitle());
+        todo.setCompleted(updateTodo.getCompleted());
 
-        return new CustomResponseEntity(HttpStatus.OK.value(), true, defaultTodoMapper.toDTO(todoEntity));
+        todoRepository.save(todo);
+
+        return new CustomResponseEntity(HttpStatus.OK.value(), true, returnTodoMapper.toDTO(todo));
     }
 
     @Override

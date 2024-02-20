@@ -4,7 +4,7 @@ import com.diyonfinesco.todo.config.JwtService;
 import com.diyonfinesco.todo.dto.auth.AuthResponseDTO;
 import com.diyonfinesco.todo.dto.user.LoginUserDTO;
 import com.diyonfinesco.todo.dto.user.RegisterUserDTO;
-import com.diyonfinesco.todo.mapper.user.DefaultUserMapper;
+import com.diyonfinesco.todo.mapper.user.ReturnUserMapper;
 import com.diyonfinesco.todo.mapper.user.RegisterUserMapper;
 import com.diyonfinesco.todo.model.entity.UserEntity;
 import com.diyonfinesco.todo.model.enums.Role;
@@ -27,7 +27,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     RegisterUserMapper registerUserMapper;
 
     @Autowired
-    DefaultUserMapper defaultUserMapper;
+    ReturnUserMapper returnUserMapper;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -47,7 +47,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         UserEntity newUser = registerUserMapper.toEntity(registerUserDTO);
-        newUser.setRole(Role.USER);
+        newUser.setRole(Role.ROLE_USER);
         newUser.setPassword(passwordEncoder.encode(registerUserDTO.getPassword()));
 
         userRepository.save(newUser);
