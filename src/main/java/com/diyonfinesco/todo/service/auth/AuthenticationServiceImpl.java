@@ -5,7 +5,6 @@ import com.diyonfinesco.todo.dto.auth.AuthResponseDTO;
 import com.diyonfinesco.todo.dto.user.LoginUserDTO;
 import com.diyonfinesco.todo.dto.user.RegisterUserDTO;
 import com.diyonfinesco.todo.mapper.user.RegisterUserMapper;
-import com.diyonfinesco.todo.mapper.user.ReturnUserMapper;
 import com.diyonfinesco.todo.model.entity.UserEntity;
 import com.diyonfinesco.todo.model.enums.Role;
 import com.diyonfinesco.todo.repository.UserRepository;
