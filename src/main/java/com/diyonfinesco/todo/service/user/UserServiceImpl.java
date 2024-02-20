@@ -1,8 +1,8 @@
 package com.diyonfinesco.todo.service.user;
 
 import com.diyonfinesco.todo.dto.user.RegisterUserDTO;
-import com.diyonfinesco.todo.mapper.user.ReturnUserMapper;
 import com.diyonfinesco.todo.mapper.user.RegisterUserMapper;
+import com.diyonfinesco.todo.mapper.user.ReturnUserMapper;
 import com.diyonfinesco.todo.model.entity.UserEntity;
 import com.diyonfinesco.todo.model.enums.Role;
 import com.diyonfinesco.todo.repository.UserRepository;
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity getLoggedInUser(){
+    public UserEntity getLoggedInUser() {
         UserEntity userFromSecurity = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         UserEntity currentUser = new UserEntity();

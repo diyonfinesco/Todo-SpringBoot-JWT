@@ -1,6 +1,7 @@
 package com.diyonfinesco.todo.service.todo;
 
 import com.diyonfinesco.todo.dto.todo.CreateTodoDTO;
+import com.diyonfinesco.todo.dto.todo.ReturnTodoDTO;
 import com.diyonfinesco.todo.dto.todo.UpdateTodoDTO;
 import com.diyonfinesco.todo.mapper.todo.CreateTodoMapper;
 import com.diyonfinesco.todo.mapper.todo.ReturnTodoMapper;
@@ -45,14 +46,20 @@ public class TodoServiceImpl implements TodoService {
         todoEntity.setUser(userService.getLoggedInUser());
         todoEntity.setCompleted(false);
 
-        return new CustomResponseEntity(HttpStatus.CREATED.value(), true, returnTodoMapper.toDTO(todoRepository.save(todoEntity)));
+        todoRepository.save(todoEntity);
+
+        ReturnTodoDTO returnTodoDTO = returnTodoMapper.toDTO(todoEntity);
+
+        return new CustomResponseEntity(HttpStatus.CREATED.value(), true, returnTodoDTO);
     }
 
     @Override
     public CustomResponseEntity findAll() {
         List<TodoEntity> entities = todoRepository.findAllByUser(userService.getLoggedInUser());
 
-        return new CustomResponseEntity(HttpStatus.OK.value(), true, returnTodoMapper.toDTOList(entities));
+        List<ReturnTodoDTO> returnTodoDTOList = returnTodoMapper.toDTOList(entities);
+
+        return new CustomResponseEntity(HttpStatus.OK.value(), true, returnTodoDTOList);
     }
 
     @Override
@@ -63,7 +70,9 @@ public class TodoServiceImpl implements TodoService {
             return new CustomResponseEntity(HttpStatus.NOT_FOUND.value(), false, "Todo not found!");
         }
 
-        return new CustomResponseEntity(HttpStatus.OK.value(), true, returnTodoMapper.toDTO(todoEntity));
+        ReturnTodoDTO returnTodoDTO = returnTodoMapper.toDTO(todoEntity);
+
+        return new CustomResponseEntity(HttpStatus.OK.value(), true, returnTodoDTO);
     }
 
     @Override
@@ -87,7 +96,9 @@ public class TodoServiceImpl implements TodoService {
 
         todoRepository.save(todo);
 
-        return new CustomResponseEntity(HttpStatus.OK.value(), true, returnTodoMapper.toDTO(todo));
+        ReturnTodoDTO returnTodoDTO = returnTodoMapper.toDTO(todo);
+
+        return new CustomResponseEntity(HttpStatus.OK.value(), true, returnTodoDTO);
     }
 
     @Override
@@ -99,6 +110,7 @@ public class TodoServiceImpl implements TodoService {
         }
 
         todoRepository.delete(isExist);
+
         return new CustomResponseEntity(HttpStatus.OK.value(), true, "Todo deleted");
     }
 }
