@@ -6,10 +6,14 @@ import com.diyonfinesco.todo.mapper.todo.CreateTodoMapper;
 import com.diyonfinesco.todo.mapper.todo.DefaultTodoMapper;
 import com.diyonfinesco.todo.mapper.todo.UpdateTodoMapper;
 import com.diyonfinesco.todo.model.entity.TodoEntity;
+import com.diyonfinesco.todo.model.entity.UserEntity;
 import com.diyonfinesco.todo.repository.TodoRepository;
+import com.diyonfinesco.todo.repository.UserRepository;
+import com.diyonfinesco.todo.service.user.UserService;
 import com.diyonfinesco.todo.util.CustomResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +32,9 @@ public class TodoServiceImpl implements TodoService {
     @Autowired
     private DefaultTodoMapper defaultTodoMapper;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public CustomResponseEntity create(CreateTodoDTO todoDTO) {
         TodoEntity isExist = todoRepository.findByTitle(todoDTO.getTitle());
@@ -44,6 +51,9 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public CustomResponseEntity findAll() {
         List<TodoEntity> entities = todoRepository.findAll();
+
+        UserEntity currentUser = userService.getLoggedInUser();
+
         return new CustomResponseEntity(HttpStatus.OK.value(), true, defaultTodoMapper.toDTOList(entities));
     }
 

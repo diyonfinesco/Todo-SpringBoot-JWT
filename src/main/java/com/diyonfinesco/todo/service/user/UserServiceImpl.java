@@ -9,6 +9,7 @@ import com.diyonfinesco.todo.repository.UserRepository;
 import com.diyonfinesco.todo.util.CustomResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -72,5 +73,18 @@ public class UserServiceImpl implements UserService {
         }
 
         return new CustomResponseEntity(HttpStatus.OK.value(), true, defaultUserMapper.toDTO(user));
+    }
+
+    @Override
+    public UserEntity getLoggedInUser(){
+        UserEntity userFromSecurity = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        UserEntity currentUser = new UserEntity();
+
+        currentUser.setId(userFromSecurity.getId());
+        currentUser.setEmail(userFromSecurity.getEmail());
+        currentUser.setRole(userFromSecurity.getRole());
+
+        return currentUser;
     }
 }
