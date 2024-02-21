@@ -48,6 +48,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CustomResponseEntity findAll() {
+
+        UserEntity loggedInUser = getLoggedInUser();
+
+        if(loggedInUser.getRole().equals(Role.ROLE_USER)){
+            return new CustomResponseEntity(HttpStatus.FORBIDDEN.value(), false, "You don't have permission to do this!");
+        }
+
         List<UserEntity> users = userRepository.findAll();
 
         return new CustomResponseEntity(HttpStatus.OK.value(), true, returnUserMapper.toDTOList(users));
@@ -55,6 +62,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CustomResponseEntity findById(String id) {
+
+        UserEntity loggedInUser = getLoggedInUser();
+
+        if(loggedInUser.getRole().equals(Role.ROLE_USER)){
+            return new CustomResponseEntity(HttpStatus.FORBIDDEN.value(), false, "You don't have permission to do this!");
+        }
+
         UserEntity user = userRepository.findById(id).orElse(null);
 
         if (user == null) {
