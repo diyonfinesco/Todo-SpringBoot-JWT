@@ -77,7 +77,8 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public CustomResponseEntity update(String id, UpdateTodoDTO updateTodoDTO) {
-        TodoEntity todo = todoRepository.findById(id).orElse(null);
+
+        TodoEntity todo = todoRepository.findByIdAndUser(id, userService.getLoggedInUser()).orElse(null);
 
         if (todo == null) {
             return new CustomResponseEntity(HttpStatus.NOT_FOUND.value(), false, "Todo not found!");
@@ -103,13 +104,14 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public CustomResponseEntity delete(String id) {
-        TodoEntity isExist = todoRepository.findById(id).orElse(null);
 
-        if (isExist == null) {
+        TodoEntity todo = todoRepository.findByIdAndUser(id, userService.getLoggedInUser()).orElse(null);
+
+        if (todo == null) {
             return new CustomResponseEntity(HttpStatus.NOT_FOUND.value(), false, "Todo not found!");
         }
 
-        todoRepository.delete(isExist);
+        todoRepository.delete(todo);
 
         return new CustomResponseEntity(HttpStatus.OK.value(), true, "Todo deleted");
     }
