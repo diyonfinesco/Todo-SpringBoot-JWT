@@ -2,16 +2,16 @@ package com.diyonfinesco.todo.service.todo;
 
 import com.diyonfinesco.todo.dto.todo.CreateTodoDTO;
 import com.diyonfinesco.todo.dto.todo.UpdateTodoDTO;
-import com.diyonfinesco.todo.util.CustomResponseEntity;
+import com.diyonfinesco.todo.util.CustomResponse;
 
 public interface TodoService {
-    CustomResponseEntity create(CreateTodoDTO todoDTO);
+    CustomResponse create(CreateTodoDTO todoDTO);
 
-    CustomResponseEntity findAll();
+    CustomResponse findAll();
 
-    CustomResponseEntity findById(String id);
+    CustomResponse findById(String id);
 
-    CustomResponseEntity update(String id, UpdateTodoDTO updateTodoDTO);
+    CustomResponse update(String id, UpdateTodoDTO updateTodoDTO);
 
-    CustomResponseEntity delete(String id);
+    CustomResponse delete(String id);
 }

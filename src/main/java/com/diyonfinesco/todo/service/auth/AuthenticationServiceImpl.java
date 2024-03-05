@@ -8,7 +8,7 @@ import com.diyonfinesco.todo.mapper.user.RegisterUserMapper;
 import com.diyonfinesco.todo.model.entity.UserEntity;
 import com.diyonfinesco.todo.model.enums.Role;
 import com.diyonfinesco.todo.repository.UserRepository;
-import com.diyonfinesco.todo.util.CustomResponseEntity;
+import com.diyonfinesco.todo.util.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,11 +35,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     AuthenticationManager authenticationManager;
 
     @Override
-    public CustomResponseEntity register(RegisterUserDTO registerUserDTO) {
+    public CustomResponse register(RegisterUserDTO registerUserDTO) {
         UserEntity user = userRepository.findByEmail(registerUserDTO.getEmail()).orElse(null);
 
         if (user != null) {
-            return new CustomResponseEntity(HttpStatus.BAD_REQUEST.value(), false, "User already exist!");
+            return new CustomResponse(HttpStatus.BAD_REQUEST.value(), false, "User already exist!");
         }
 
         UserEntity newUser = registerUserMapper.toEntity(registerUserDTO);
@@ -53,23 +53,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         AuthResponseDTO authResponseDTO = new AuthResponseDTO(newUser.getEmail(), jwtToken);
 
-        return new CustomResponseEntity(HttpStatus.CREATED.value(), true, authResponseDTO);
+        return new CustomResponse(HttpStatus.CREATED.value(), true, authResponseDTO);
     }
 
     @Override
-    public CustomResponseEntity authenticate(LoginUserDTO loginUserDTO) {
+    public CustomResponse authenticate(LoginUserDTO loginUserDTO) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUserDTO.getEmail(), loginUserDTO.getPassword()));
 
         UserEntity user = userRepository.findByEmail(loginUserDTO.getEmail()).orElse(null);
 
         if (user == null) {
-            return new CustomResponseEntity(HttpStatus.NOT_FOUND.value(), false, "User not found");
+            return new CustomResponse(HttpStatus.NOT_FOUND.value(), false, "User not found");
         }
 
         String jwtToken = jwtService.generateToken(user);
 
         AuthResponseDTO authResponseDTO = new AuthResponseDTO(user.getEmail(), jwtToken);
 
-        return new CustomResponseEntity(HttpStatus.OK.value(), true, authResponseDTO);
+        return new CustomResponse(HttpStatus.OK.value(), true, authResponseDTO);
     }
 }

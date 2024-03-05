@@ -2,16 +2,16 @@ package com.diyonfinesco.todo.service.user;
 
 import com.diyonfinesco.todo.dto.user.RegisterUserDTO;
 import com.diyonfinesco.todo.model.entity.UserEntity;
-import com.diyonfinesco.todo.util.CustomResponseEntity;
+import com.diyonfinesco.todo.util.CustomResponse;
 
 public interface UserService {
-    CustomResponseEntity create(RegisterUserDTO registerUserDTO);
+    CustomResponse create(RegisterUserDTO registerUserDTO);
 
-    CustomResponseEntity findAll();
+    CustomResponse findAll();
 
-    CustomResponseEntity findById(String id);
+    CustomResponse findById(String id);
 
-    CustomResponseEntity findByEmail(String email);
+    CustomResponse findByEmail(String email);
 
     UserEntity getLoggedInUser();
 }

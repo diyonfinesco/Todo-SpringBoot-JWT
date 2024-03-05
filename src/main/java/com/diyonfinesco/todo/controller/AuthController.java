@@ -3,7 +3,7 @@ package com.diyonfinesco.todo.controller;
 import com.diyonfinesco.todo.dto.user.LoginUserDTO;
 import com.diyonfinesco.todo.dto.user.RegisterUserDTO;
 import com.diyonfinesco.todo.service.auth.AuthenticationService;
-import com.diyonfinesco.todo.util.CustomResponseEntity;
+import com.diyonfinesco.todo.util.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,13 +20,13 @@ public class AuthController {
     AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public CustomResponseEntity register(@Valid @RequestBody RegisterUserDTO registerUserDTO) {
+    public CustomResponse register(@Valid @RequestBody RegisterUserDTO registerUserDTO) {
         return authenticationService.register(registerUserDTO);
     }
 
 
     @PostMapping("/login")
-    public CustomResponseEntity login(@Valid @RequestBody LoginUserDTO loginUserDTO) {
+    public CustomResponse login(@Valid @RequestBody LoginUserDTO loginUserDTO) {
         return authenticationService.authenticate(loginUserDTO);
     }
 }

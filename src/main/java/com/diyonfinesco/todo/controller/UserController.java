@@ -2,7 +2,7 @@ package com.diyonfinesco.todo.controller;
 
 import com.diyonfinesco.todo.dto.user.RegisterUserDTO;
 import com.diyonfinesco.todo.service.user.UserService;
-import com.diyonfinesco.todo.util.CustomResponseEntity;
+import com.diyonfinesco.todo.util.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,17 +16,17 @@ public class UserController {
     UserService userService;
 
     @PostMapping()
-    public CustomResponseEntity create(@Valid @RequestBody RegisterUserDTO registerUserDTO) {
+    public CustomResponse create(@Valid @RequestBody RegisterUserDTO registerUserDTO) {
         return userService.create(registerUserDTO);
     }
 
     @GetMapping()
-    public CustomResponseEntity findAll() {
+    public CustomResponse findAll() {
         return userService.findAll();
     }
 
     @GetMapping("/{id}")
-    public CustomResponseEntity findById(@PathVariable String id) {
+    public CustomResponse findById(@PathVariable String id) {
         return userService.findById(id);
     }
 }

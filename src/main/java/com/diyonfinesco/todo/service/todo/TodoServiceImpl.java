@@ -9,7 +9,7 @@ import com.diyonfinesco.todo.mapper.todo.UpdateTodoMapper;
 import com.diyonfinesco.todo.model.entity.TodoEntity;
 import com.diyonfinesco.todo.repository.TodoRepository;
 import com.diyonfinesco.todo.service.user.UserService;
-import com.diyonfinesco.todo.util.CustomResponseEntity;
+import com.diyonfinesco.todo.util.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -34,11 +34,11 @@ public class TodoServiceImpl implements TodoService {
     private UserService userService;
 
     @Override
-    public CustomResponseEntity create(CreateTodoDTO todoDTO) {
+    public CustomResponse create(CreateTodoDTO todoDTO) {
         TodoEntity isExist = todoRepository.findByTitleIgnoreCase(todoDTO.getTitle());
 
         if (isExist != null) {
-            return new CustomResponseEntity(HttpStatus.BAD_REQUEST.value(), false, "Todo title already exist!");
+            return new CustomResponse(HttpStatus.BAD_REQUEST.value(), false, "Todo title already exist!");
         }
 
         TodoEntity todoEntity = createTodoMapper.toEntity(todoDTO);
@@ -50,44 +50,44 @@ public class TodoServiceImpl implements TodoService {
 
         ReturnTodoDTO returnTodoDTO = returnTodoMapper.toDTO(todoEntity);
 
-        return new CustomResponseEntity(HttpStatus.CREATED.value(), true, returnTodoDTO);
+        return new CustomResponse(HttpStatus.CREATED.value(), true, returnTodoDTO);
     }
 
     @Override
-    public CustomResponseEntity findAll() {
+    public CustomResponse findAll() {
         List<TodoEntity> entities = todoRepository.findAllByUser(userService.getLoggedInUser());
 
         List<ReturnTodoDTO> returnTodoDTOList = returnTodoMapper.toDTOList(entities);
 
-        return new CustomResponseEntity(HttpStatus.OK.value(), true, returnTodoDTOList);
+        return new CustomResponse(HttpStatus.OK.value(), true, returnTodoDTOList);
     }
 
     @Override
-    public CustomResponseEntity findById(String id) {
+    public CustomResponse findById(String id) {
         TodoEntity todoEntity = todoRepository.findByIdAndUser(id, userService.getLoggedInUser()).orElse(null);
 
         if (todoEntity == null) {
-            return new CustomResponseEntity(HttpStatus.NOT_FOUND.value(), false, "Todo not found!");
+            return new CustomResponse(HttpStatus.NOT_FOUND.value(), false, "Todo not found!");
         }
 
         ReturnTodoDTO returnTodoDTO = returnTodoMapper.toDTO(todoEntity);
 
-        return new CustomResponseEntity(HttpStatus.OK.value(), true, returnTodoDTO);
+        return new CustomResponse(HttpStatus.OK.value(), true, returnTodoDTO);
     }
 
     @Override
-    public CustomResponseEntity update(String id, UpdateTodoDTO updateTodoDTO) {
+    public CustomResponse update(String id, UpdateTodoDTO updateTodoDTO) {
 
         TodoEntity todo = todoRepository.findByIdAndUser(id, userService.getLoggedInUser()).orElse(null);
 
         if (todo == null) {
-            return new CustomResponseEntity(HttpStatus.NOT_FOUND.value(), false, "Todo not found!");
+            return new CustomResponse(HttpStatus.NOT_FOUND.value(), false, "Todo not found!");
         }
 
         TodoEntity isExistBySameTitle = todoRepository.findByTitleIgnoreCaseAndIdNot(updateTodoDTO.getTitle(), id);
 
         if (isExistBySameTitle != null) {
-            return new CustomResponseEntity(HttpStatus.NOT_FOUND.value(), false, "Todo title already exist!");
+            return new CustomResponse(HttpStatus.NOT_FOUND.value(), false, "Todo title already exist!");
         }
 
         TodoEntity updateTodo = updateTodoMapper.toEntity(updateTodoDTO);
@@ -99,20 +99,20 @@ public class TodoServiceImpl implements TodoService {
 
         ReturnTodoDTO returnTodoDTO = returnTodoMapper.toDTO(todo);
 
-        return new CustomResponseEntity(HttpStatus.OK.value(), true, returnTodoDTO);
+        return new CustomResponse(HttpStatus.OK.value(), true, returnTodoDTO);
     }
 
     @Override
-    public CustomResponseEntity delete(String id) {
+    public CustomResponse delete(String id) {
 
         TodoEntity todo = todoRepository.findByIdAndUser(id, userService.getLoggedInUser()).orElse(null);
 
         if (todo == null) {
-            return new CustomResponseEntity(HttpStatus.NOT_FOUND.value(), false, "Todo not found!");
+            return new CustomResponse(HttpStatus.NOT_FOUND.value(), false, "Todo not found!");
         }
 
         todoRepository.delete(todo);
 
-        return new CustomResponseEntity(HttpStatus.OK.value(), true, "Todo deleted");
+        return new CustomResponse(HttpStatus.OK.value(), true, "Todo deleted");
     }
 }

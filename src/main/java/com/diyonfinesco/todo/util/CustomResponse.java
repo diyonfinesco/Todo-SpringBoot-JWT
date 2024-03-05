@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class CustomResponseEntity {
+public class CustomResponse {
     private int status;
     private boolean success;
     private Object result;

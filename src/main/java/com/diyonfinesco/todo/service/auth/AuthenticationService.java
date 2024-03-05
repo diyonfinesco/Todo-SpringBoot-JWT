@@ -2,10 +2,10 @@ package com.diyonfinesco.todo.service.auth;
 
 import com.diyonfinesco.todo.dto.user.LoginUserDTO;
 import com.diyonfinesco.todo.dto.user.RegisterUserDTO;
-import com.diyonfinesco.todo.util.CustomResponseEntity;
+import com.diyonfinesco.todo.util.CustomResponse;
 
 public interface AuthenticationService {
-    CustomResponseEntity register(RegisterUserDTO registerUserDTO);
+    CustomResponse register(RegisterUserDTO registerUserDTO);
 
-    CustomResponseEntity authenticate(LoginUserDTO loginUserDTO);
+    CustomResponse authenticate(LoginUserDTO loginUserDTO);
 }
