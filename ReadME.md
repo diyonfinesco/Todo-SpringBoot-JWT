@@ -6,7 +6,7 @@ A brief description of the project goes here.
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
-- [Project Information](#project information)
+- [Project-Information](#project information)
 
 ## Installation
 Provide instructions on how to install and set up the project.
