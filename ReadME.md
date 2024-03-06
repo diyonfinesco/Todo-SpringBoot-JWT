@@ -6,6 +6,7 @@ A brief description of the project goes here.
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
+- [Usage](#usage)
 - [Project-Information](#project information)
 
 ## Installation
