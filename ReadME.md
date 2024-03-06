@@ -6,7 +6,7 @@ A brief description of the project goes here.
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
-- [Project-Information](#project-information)
+- [Tech-Stack](#tech-stack)
 
 ## Installation
 Provide instructions on how to install and set up the project.
@@ -14,7 +14,7 @@ Provide instructions on how to install and set up the project.
 ## Usage
 Explain how to use the project, including examples if applicable.
 
-## Project-Information
+## Tech-Stack
 
 ### 1. What is spring boot ?
 Spring Boot is an open-source, microservice-based Java web framework offered by Spring, particularly useful for develop web apps and microservices using Java.
