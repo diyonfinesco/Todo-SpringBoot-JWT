@@ -36,3 +36,11 @@ It is an object-oriented programming language which more popular among all the p
 - JRE (Java Runtime Environment) is provides runtime environment to execute java applications. in includes JVM.
 - JVM (Java Virtual Machine) is responsible to translate byte code into native code which can run any platform that has JRE installed.
 
+## Diagrams
+
+### ER Diagram
+![Screenshot 2024-03-13 at 8 14 33 PM](https://github.com/diyonfinesco/Todo-SpringBoot-JWT/assets/47470571/93d4a520-8531-4506-8995-672446c033e8)
+
+### ER Conceptual Diagram
+![Screenshot 2024-03-13 at 9 18 41 PM](https://github.com/diyonfinesco/Todo-SpringBoot-JWT/assets/47470571/5d002501-8a68-45ee-b911-19e2ee76690d)
+
