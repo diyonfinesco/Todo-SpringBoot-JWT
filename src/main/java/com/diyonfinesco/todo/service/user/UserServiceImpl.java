@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
         UserEntity loggedInUser = getLoggedInUser();
 
-        if(loggedInUser.getRole().equals(Role.ROLE_USER)){
+        if (loggedInUser.getRole().equals(Role.ROLE_USER)) {
             return new CustomResponse(HttpStatus.FORBIDDEN.value(), false, "You don't have permission to do this!");
         }
 
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
         UserEntity loggedInUser = getLoggedInUser();
 
-        if(loggedInUser.getRole().equals(Role.ROLE_USER)){
+        if (loggedInUser.getRole().equals(Role.ROLE_USER)) {
             return new CustomResponse(HttpStatus.FORBIDDEN.value(), false, "You don't have permission to do this!");
         }
 

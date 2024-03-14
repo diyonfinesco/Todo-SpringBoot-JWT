@@ -6,14 +6,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataMongoTest(excludeAutoConfiguration = EmbeddedMongoAutoConfiguration.class)
 class UserRepositoryTest {
@@ -21,23 +18,22 @@ class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAll();
-    }
-
     @BeforeAll
     static void beforeAll() {
 
+    }
+
+    @AfterEach
+    void tearDown() {
+        userRepository.deleteAll();
     }
 
     @Nested
     class findByEmail {
         @Test
         void itShouldReturnAUserWithExistEmail() {
-            String email = "john@example.com";
-
             // arrange
+            String email = "john@example.com";
             UserEntity user = new UserEntity();
 
             user.setEmail(email);
