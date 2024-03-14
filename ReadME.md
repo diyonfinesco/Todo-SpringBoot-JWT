@@ -1,6 +1,5 @@
 # Todo-Application API
 
-## Description
 A brief description of the project goes here.
 
 ## Table of Contents
