@@ -18,12 +18,12 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final ReturnUserMapper returnUserMapper;
 
     @Autowired
     private RegisterUserMapper registerUserMapper;
-
-    private ReturnUserMapper returnUserMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -52,7 +52,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public CustomResponse findAll() {
         List<UserEntity> users = userRepository.findAll();
-        System.out.println(returnUserMapper.toDTOList(users));
         return new CustomResponse(HttpStatus.OK, true, returnUserMapper.toDTOList(users));
     }
 

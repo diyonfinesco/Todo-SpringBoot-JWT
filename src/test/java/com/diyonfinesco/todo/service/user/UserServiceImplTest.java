@@ -11,15 +11,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @DataMongoTest(excludeAutoConfiguration = EmbeddedMongoAutoConfiguration.class)
@@ -29,6 +29,7 @@ class UserServiceImplTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
     private ReturnUserMapper returnUserMapper;
 
     private UserService userService;
@@ -46,12 +47,18 @@ class UserServiceImplTest {
     @Test
     void findAll() {
         // arrange
-        List<UserEntity> users = List.of(
-                    new UserEntity("1", "john@example.com", "password", Role.ROLE_USER),
-                    new UserEntity("2", "smith@example.com", "password", Role.ROLE_ADMIN)
+        List<UserEntity> usersEntityList = Arrays.asList(
+                new UserEntity("1", "john@example.com", "password", Role.ROLE_USER),
+                new UserEntity("2", "smith@example.com", "password", Role.ROLE_ADMIN)
         );
 
-        when(userRepository.findAll()).thenReturn(users);
+        List<ReturnUserDTO> usersDTOList = Arrays.asList(
+                new ReturnUserDTO("1", "john@example.com"),
+                new ReturnUserDTO("2", "smith@example.com")
+        );
+
+        when(userRepository.findAll()).thenReturn(usersEntityList);
+        when(returnUserMapper.toDTOList(any())).thenReturn(usersDTOList);
 
         // act
         CustomResponse response = userService.findAll();
@@ -59,8 +66,7 @@ class UserServiceImplTest {
         // assert
         assertThat(response.getStatus()).isEqualTo(200);
         assertThat(response.isSuccess()).isTrue();
-        System.out.println(response.getResult()!=null && response.getResult().getClass().isArray());
-        assertThat(response.getResult()).usingRecursiveComparison().isEqualTo(returnUserMapper.toDTOList(users));
+        assertThat(response.getResult()).usingRecursiveComparison().isEqualTo(usersDTOList);
     }
 
     @Test
