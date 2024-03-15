@@ -18,17 +18,20 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    RegisterUserMapper registerUserMapper;
+    private RegisterUserMapper registerUserMapper;
 
     @Autowired
-    ReturnUserMapper returnUserMapper;
+    private ReturnUserMapper returnUserMapper;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public CustomResponse create(RegisterUserDTO registerUserDTO) {

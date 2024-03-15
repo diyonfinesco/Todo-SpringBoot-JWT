@@ -1,30 +1,31 @@
 package com.diyonfinesco.todo.service.user;
 
+import com.diyonfinesco.todo.mapper.user.ReturnUserMapper;
 import com.diyonfinesco.todo.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
+import de.flapdoodle.embed.mongo.spring.autoconfigure.EmbeddedMongoAutoConfiguration;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.test.context.ContextConfiguration;
+
+import static org.mockito.Mockito.verify;
 
 @DataMongoTest(excludeAutoConfiguration = EmbeddedMongoAutoConfiguration.class)
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration
 class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
 
-    private UserService userService;
+    @Spy
+    private ReturnUserMapper returnUserMapper;
 
-    @BeforeEach
-    void setup() {
-        userService = new UserServiceImpl();
-    }
+    @InjectMocks
+    private UserServiceImpl userService;
 
     @Test
     @Disabled
@@ -32,8 +33,10 @@ class UserServiceImplTest {
     }
 
     @Test
-    @Disabled
     void findAll() {
+        userService.findAll();
+
+        verify(userRepository).findAll();
     }
 
     @Test
