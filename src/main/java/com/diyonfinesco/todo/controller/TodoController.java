@@ -5,6 +5,7 @@ import com.diyonfinesco.todo.dto.todo.UpdateTodoDTO;
 import com.diyonfinesco.todo.service.todo.TodoService;
 import com.diyonfinesco.todo.util.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,28 +18,33 @@ public class TodoController {
     TodoService todoService;
 
     @PostMapping()
-    public CustomResponse create(@Valid @RequestBody CreateTodoDTO todo) {
-        return todoService.create(todo);
+    public ResponseEntity<CustomResponse> create(@Valid @RequestBody CreateTodoDTO todo) {
+        CustomResponse response = todoService.create(todo);
+        return new ResponseEntity<>(response, response.getHttpStatusCode());
     }
 
     @GetMapping()
-    public CustomResponse findAll() {
-        return todoService.findAll();
+    public ResponseEntity<CustomResponse> findAll() {
+        CustomResponse response = todoService.findAll();
+        return new ResponseEntity<>(response, response.getHttpStatusCode());
     }
 
 
     @GetMapping("/{id}")
-    public CustomResponse findById(@PathVariable String id) {
-        return todoService.findById(id);
+    public ResponseEntity<CustomResponse> findById(@PathVariable String id) {
+        CustomResponse response = todoService.findById(id);
+        return new ResponseEntity<>(response, response.getHttpStatusCode());
     }
 
     @PutMapping("/{id}")
-    public CustomResponse update(@PathVariable String id, @Valid @RequestBody UpdateTodoDTO updateTodoDTO) {
-        return todoService.update(id, updateTodoDTO);
+    public ResponseEntity<CustomResponse> update(@PathVariable String id, @Valid @RequestBody UpdateTodoDTO updateTodoDTO) {
+        CustomResponse response = todoService.update(id, updateTodoDTO);
+        return new ResponseEntity<>(response, response.getHttpStatusCode());
     }
 
     @DeleteMapping("/{id}")
-    public CustomResponse delete(@PathVariable String id) {
-        return todoService.delete(id);
+    public ResponseEntity<CustomResponse> delete(@PathVariable String id) {
+        CustomResponse response = todoService.delete(id);
+        return new ResponseEntity<>(response, response.getHttpStatusCode());
     }
 }

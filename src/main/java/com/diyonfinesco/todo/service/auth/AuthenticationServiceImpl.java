@@ -39,7 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserEntity user = userRepository.findByEmail(registerUserDTO.getEmail()).orElse(null);
 
         if (user != null) {
-            return new CustomResponse(HttpStatus.BAD_REQUEST.value(), false, "User already exist!");
+            return new CustomResponse(HttpStatus.BAD_REQUEST, false, "User already exist!");
         }
 
         UserEntity newUser = registerUserMapper.toEntity(registerUserDTO);
@@ -53,7 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         AuthResponseDTO authResponseDTO = new AuthResponseDTO(newUser.getEmail(), jwtToken);
 
-        return new CustomResponse(HttpStatus.CREATED.value(), true, authResponseDTO);
+        return new CustomResponse(HttpStatus.CREATED, true, authResponseDTO);
     }
 
     @Override
@@ -63,13 +63,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserEntity user = userRepository.findByEmail(loginUserDTO.getEmail()).orElse(null);
 
         if (user == null) {
-            return new CustomResponse(HttpStatus.NOT_FOUND.value(), false, "User not found");
+            return new CustomResponse(HttpStatus.NOT_FOUND, false, "User not found");
         }
 
         String jwtToken = jwtService.generateToken(user);
 
         AuthResponseDTO authResponseDTO = new AuthResponseDTO(user.getEmail(), jwtToken);
 
-        return new CustomResponse(HttpStatus.OK.value(), true, authResponseDTO);
+        return new CustomResponse(HttpStatus.OK, true, authResponseDTO);
     }
 }

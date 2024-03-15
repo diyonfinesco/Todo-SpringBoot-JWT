@@ -38,7 +38,7 @@ public class TodoServiceImpl implements TodoService {
         TodoEntity isExist = todoRepository.findByTitleIgnoreCase(todoDTO.getTitle());
 
         if (isExist != null) {
-            return new CustomResponse(HttpStatus.BAD_REQUEST.value(), false, "Todo title already exist!");
+            return new CustomResponse(HttpStatus.BAD_REQUEST, false, "Todo title already exist!");
         }
 
         TodoEntity todoEntity = createTodoMapper.toEntity(todoDTO);
@@ -50,7 +50,7 @@ public class TodoServiceImpl implements TodoService {
 
         ReturnTodoDTO returnTodoDTO = returnTodoMapper.toDTO(todoEntity);
 
-        return new CustomResponse(HttpStatus.CREATED.value(), true, returnTodoDTO);
+        return new CustomResponse(HttpStatus.CREATED, true, returnTodoDTO);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class TodoServiceImpl implements TodoService {
 
         List<ReturnTodoDTO> returnTodoDTOList = returnTodoMapper.toDTOList(entities);
 
-        return new CustomResponse(HttpStatus.OK.value(), true, returnTodoDTOList);
+        return new CustomResponse(HttpStatus.OK, true, returnTodoDTOList);
     }
 
     @Override
@@ -67,12 +67,12 @@ public class TodoServiceImpl implements TodoService {
         TodoEntity todoEntity = todoRepository.findByIdAndUser(id, userService.getLoggedInUser()).orElse(null);
 
         if (todoEntity == null) {
-            return new CustomResponse(HttpStatus.NOT_FOUND.value(), false, "Todo not found!");
+            return new CustomResponse(HttpStatus.NOT_FOUND, false, "Todo not found!");
         }
 
         ReturnTodoDTO returnTodoDTO = returnTodoMapper.toDTO(todoEntity);
 
-        return new CustomResponse(HttpStatus.OK.value(), true, returnTodoDTO);
+        return new CustomResponse(HttpStatus.OK, true, returnTodoDTO);
     }
 
     @Override
@@ -81,13 +81,13 @@ public class TodoServiceImpl implements TodoService {
         TodoEntity todo = todoRepository.findByIdAndUser(id, userService.getLoggedInUser()).orElse(null);
 
         if (todo == null) {
-            return new CustomResponse(HttpStatus.NOT_FOUND.value(), false, "Todo not found!");
+            return new CustomResponse(HttpStatus.NOT_FOUND, false, "Todo not found!");
         }
 
         TodoEntity isExistBySameTitle = todoRepository.findByTitleIgnoreCaseAndIdNot(updateTodoDTO.getTitle(), id);
 
         if (isExistBySameTitle != null) {
-            return new CustomResponse(HttpStatus.NOT_FOUND.value(), false, "Todo title already exist!");
+            return new CustomResponse(HttpStatus.NOT_FOUND, false, "Todo title already exist!");
         }
 
         TodoEntity updateTodo = updateTodoMapper.toEntity(updateTodoDTO);
@@ -99,7 +99,7 @@ public class TodoServiceImpl implements TodoService {
 
         ReturnTodoDTO returnTodoDTO = returnTodoMapper.toDTO(todo);
 
-        return new CustomResponse(HttpStatus.OK.value(), true, returnTodoDTO);
+        return new CustomResponse(HttpStatus.OK, true, returnTodoDTO);
     }
 
     @Override
@@ -108,11 +108,11 @@ public class TodoServiceImpl implements TodoService {
         TodoEntity todo = todoRepository.findByIdAndUser(id, userService.getLoggedInUser()).orElse(null);
 
         if (todo == null) {
-            return new CustomResponse(HttpStatus.NOT_FOUND.value(), false, "Todo not found!");
+            return new CustomResponse(HttpStatus.NOT_FOUND, false, "Todo not found!");
         }
 
         todoRepository.delete(todo);
 
-        return new CustomResponse(HttpStatus.OK.value(), true, "Todo deleted");
+        return new CustomResponse(HttpStatus.OK, true, "Todo deleted");
     }
 }
