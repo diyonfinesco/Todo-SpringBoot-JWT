@@ -23,14 +23,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RegisterUserMapper registerUserMapper;
 
-    @Autowired
     private ReturnUserMapper returnUserMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, ReturnUserMapper returnUserMapper) {
         this.userRepository = userRepository;
+        this.returnUserMapper = returnUserMapper;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public CustomResponse findAll() {
         List<UserEntity> users = userRepository.findAll();
-
+        System.out.println(returnUserMapper.toDTOList(users));
         return new CustomResponse(HttpStatus.OK, true, returnUserMapper.toDTOList(users));
     }
 
