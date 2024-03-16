@@ -75,11 +75,10 @@ class UserServiceImplTest {
     class findById {
 
         @Test
-        void itShouldReturnResponseWithUser() {
+        void shouldReturnResponseWithUser() {
             // arrange
             UserEntity userEntity = new UserEntity("1", "john@example.com", "password", Role.ROLE_USER);
             ReturnUserDTO userDTO = new ReturnUserDTO("1", "john@example.com");
-
             when(userRepository.findById("65f419007e3ed7228a35a8cd")).thenReturn(Optional.of(userEntity));
             when(returnUserMapper.toDTO(userEntity)).thenReturn(userDTO);
 
@@ -93,9 +92,9 @@ class UserServiceImplTest {
         }
 
         @Test
-        void itShouldReturnResponseWithNotFound() {
+        void shouldReturnResponseWithNotFound() {
             // act
-            CustomResponse response = userService.findById("a");
+            CustomResponse response = userService.findById("65f419007e3ed7228a35a8cd");
 
             // assert
             assertThat(response.getStatus()).isEqualTo(404);
@@ -108,13 +107,11 @@ class UserServiceImplTest {
     class findByEmail {
 
         @Test
-        void itShouldReturnResponseWithUser() {
+        void shouldReturnResponseWithUser() {
             // arrange
             String email = "john@example.com";
-
             UserEntity userEntity = new UserEntity("1", email, "password", Role.ROLE_USER);
             ReturnUserDTO userDTO = new ReturnUserDTO("1", "john@example.com");
-
             when(userRepository.findByEmail(email)).thenReturn(Optional.of(userEntity));
             when(returnUserMapper.toDTO(userEntity)).thenReturn(userDTO);
 
@@ -128,7 +125,7 @@ class UserServiceImplTest {
         }
 
         @Test
-        void itShouldReturnResponseWithNotFound() {
+        void shouldReturnResponseWithNotFound() {
             // act
             CustomResponse response = userService.findByEmail("john@example.com");
 

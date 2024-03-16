@@ -31,15 +31,13 @@ class UserRepositoryTest {
     @Nested
     class findByEmail {
         @Test
-        void itShouldReturnAUserWithExistEmail() {
+        void shouldReturnAUserWithExistEmail() {
             // arrange
             String email = "john@example.com";
             UserEntity user = new UserEntity();
-
             user.setEmail(email);
             user.setPassword("password");
             user.setRole(Role.ROLE_USER);
-
             userRepository.save(user);
 
             // act
@@ -51,11 +49,9 @@ class UserRepositoryTest {
         }
 
         @Test
-        void itShouldReturnNullForNonExistEmail() {
-            String email = "john@example.com";
-
+        void shouldReturnNullForNonExistEmail() {
             // act
-            UserEntity userExistsByEmail = userRepository.findByEmail(email).orElse(null);
+            UserEntity userExistsByEmail = userRepository.findByEmail("john@example.com").orElse(null);
 
             // assert
             assertThat(userExistsByEmail).isNull();
